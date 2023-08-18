@@ -1,0 +1,7 @@
+## Create new user
+POST http://localhost:8555/v1/user/create
+Accept: application/json
+
+{
+    "email":"test@gmail.com"
+}
