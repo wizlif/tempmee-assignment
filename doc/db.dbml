@@ -1,0 +1,45 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+Project tempmee_assignment {
+  database_type: 'Sqlite'
+  Note: '''
+    # TempMee Assignment Database
+  '''
+}
+
+Table users {
+  id integer [primary key]
+  email varchar [not null,unique]
+  password varchar [not null]
+  created_at timestamp [not null, default: `now()`]
+
+  indexes {
+    (id, email) [pk]
+  }
+}
+
+Table books {
+  id integer [primary key]
+  title varchar [not null]
+  author varchar [not null]
+  price integer [not null]
+  page_count integer
+  created_at timestamp
+  updated_at timestamp
+
+  Note: 'Books in store'
+}
+
+Table orders {
+  id integer [primary key]
+  price integer [not null]
+  book_id integer [not null]
+  user_id integer [not null]
+  status varchar [default: 'PENDING']
+  created_at timestamp
+
+  Note: 'Book orders'
+}
+
+Ref: orders.user_id > users.id
+Ref: orders.book_id > books.id
