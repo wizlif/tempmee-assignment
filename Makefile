@@ -21,6 +21,12 @@ db_schema: ## Build SQL from dbml
 sqlc: ## Build sqlc database files
 	sqlc generate
 
+mock: ## Generate mocks
+	mockgen -package mockdb -destination db/mock/store.go github.com/wizlif/tempmee_assignment/db/sqlc Store
+
+server: ## Run dev server
+	go run main.go
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
