@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/wizlif/tempmee_assignment/api"
 	"github.com/wizlif/tempmee_assignment/api/book"
+	"github.com/wizlif/tempmee_assignment/api/order"
 	"github.com/wizlif/tempmee_assignment/api/user"
 	db "github.com/wizlif/tempmee_assignment/db/sqlc"
 	"github.com/wizlif/tempmee_assignment/util"
@@ -86,6 +87,7 @@ func runGatewayServer(config util.Config, store db.Store) {
 
 	user.RegisterUserGatewayServer(grpcMux, config, store)
 	book.RegisterBookGatewayServer(grpcMux, config, store)
+	order.RegisterOrderGatewayServer(grpcMux, config, store)
 
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
