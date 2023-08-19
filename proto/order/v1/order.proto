@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package order.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/wizlif/tempmee_assignment/order/v1";
+
+message Order {
+  int32 id = 1;
+  string book = 2;
+  double amount = 3;
+  google.protobuf.Timestamp date = 4;
+  string status = 5;
+}

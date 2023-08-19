@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package order.v1;
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "order/v1/rpc_get_orders.proto";
+import "order/v1/rpc_create_order.proto";
+
+option go_package = "github.com/wizlif/tempmee_assignment/order/v1";
+
+service OrderService {
+  rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse) {
+    option (google.api.http) = {
+      get: "/v1/orders"
+      response_body:"orders"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Use this API to get a list of all orders";
+      summary: "Get order history";
+    };
+  }
+
+  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse) {
+    option (google.api.http) = {
+      post: "/v1/orders"
+      body:"*"
+      response_body: "order"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      description: "Use this API to create an order";
+      summary: "Create order";
+    };
+  }
+}

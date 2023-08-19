@@ -1,0 +1,20 @@
+syntax = "proto3";
+package order.v1;
+
+import "buf/validate/validate.proto";
+import "order/v1/order.proto";
+
+option go_package ="github.com/wizlif/tempmee_assignment/order/v1";
+
+message GetOrdersRequest {
+  optional int64 page = 1;
+  optional int64 limit = 2;
+  string email = 3 [
+    (buf.validate.field).string.email = true,
+    (buf.validate.field).required = true
+    ];
+}
+
+message GetOrdersResponse {
+  repeated Order orders =1;
+}
