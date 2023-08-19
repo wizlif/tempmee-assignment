@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/wizlif/tempmee_assignment/api"
+	"github.com/wizlif/tempmee_assignment/api/book"
 	"github.com/wizlif/tempmee_assignment/api/user"
 	db "github.com/wizlif/tempmee_assignment/db/sqlc"
 	"github.com/wizlif/tempmee_assignment/util"
@@ -15,10 +16,10 @@ import (
 	"database/sql"
 
 	"github.com/golang-migrate/migrate/v4"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/golang-migrate/migrate/v4/database/sqlite"
-	_ "github.com/wizlif/tempmee_assignment/doc/statik"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/wizlif/tempmee_assignment/doc/statik"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/rakyll/statik/fs"
@@ -58,7 +59,7 @@ func runDBMigration(conn *sql.DB, dbSource string) {
 		dbSource,
 		driver,
 	)
-	
+
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create new migrate instance")
 	}
@@ -83,7 +84,8 @@ func runGatewayServer(config util.Config, store db.Store) {
 
 	grpcMux := runtime.NewServeMux(jsonOption)
 
-	user.RegisterUserGrpcServer(grpcMux, config, store)
+	user.RegisterUserGatewayServer(grpcMux, config, store)
+	book.RegisterBookGatewayServer(grpcMux, config, store)
 
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)

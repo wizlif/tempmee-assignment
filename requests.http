@@ -1,7 +1,15 @@
-## Create new user
+### Create new user
 POST http://localhost:8555/v1/user/create
 Accept: application/json
 
 {
     "email":"test@gmail.com"
 }
+
+### Get books
+GET http://localhost:8555/v1/books
+Accept: application/json
+
+### Get books paginated
+GET http://localhost:8555/v1/books?page=2&limit=5
+Accept: application/json

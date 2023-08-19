@@ -12,14 +12,14 @@ import (
 
 type UserServer struct {
 	upb.UnimplementedUserServiceServer
-	config          util.Config
-	db              db.Store
+	config util.Config
+	db     db.Store
 }
 
-func RegisterUserGrpcServer(grpcMux *runtime.ServeMux, config util.Config,store db.Store) {
+func RegisterUserGatewayServer(grpcMux *runtime.ServeMux, config util.Config, store db.Store) {
 	server := &UserServer{
-		config:          config,
-		db:              store,
+		config: config,
+		db:     store,
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
