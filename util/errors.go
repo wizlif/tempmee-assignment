@@ -5,6 +5,7 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func InvalidArgumentError(msg string, violations []*errdetails.BadRequest_FieldViolation) error {
@@ -31,4 +32,17 @@ func ValidationErrorToFieldViolation(err error) (errs []*errdetails.BadRequest_F
 	}
 
 	return errs
+}
+
+func ValidateRequest(req protoreflect.ProtoMessage) error{
+	v, err := protovalidate.New()
+	if err != nil {
+		return status.Error(codes.Internal, "failed to initialize validator")
+	}
+
+	if err = v.Validate(req); err != nil {
+		return InvalidArgumentError("validation failed", ValidationErrorToFieldViolation(err))
+	}
+
+	return nil
 }

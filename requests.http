@@ -3,7 +3,8 @@ POST http://localhost:8555/v1/user/create
 Accept: application/json
 
 {
-    "email":"test@gmail.com"
+    "email":"test@example.com",
+    "password": "23aA#23"
 }
 
 ### Get books
@@ -13,3 +14,17 @@ Accept: application/json
 ### Get books paginated
 GET http://localhost:8555/v1/books?page=2&limit=5
 Accept: application/json
+
+### Get orders
+GET http://localhost:8555/v1/orders?email=test@example.com
+Accept: application/json
+
+### Create order
+POST http://localhost:8555/v1/orders
+Accept: application/json
+
+{
+    "book_id": 5,
+    "email":"test@example.com",
+    "total": 2
+}
