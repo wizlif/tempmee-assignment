@@ -1,5 +1,5 @@
 CREATE TABLE users (
-  id integer PRIMARY KEY,
+  id INTEGER PRIMARY KEY,
   email varchar UNIQUE NOT NULL,
   password varchar NOT NULL,
   created_at timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -7,17 +7,17 @@ CREATE TABLE users (
 );
 
 CREATE TABLE books (
-  id integer PRIMARY KEY,
+  id INTEGER PRIMARY KEY,
   title varchar NOT NULL,
   author varchar NOT NULL,
-  price integer NOT NULL,
+  price real NOT NULL,
   page_count integer NOT NULL DEFAULT 0,
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp
 );
 
 CREATE TABLE orders (
-  id integer PRIMARY KEY,
+  id INTEGER PRIMARY KEY,
   price integer NOT NULL,
   book_id integer NOT NULL,
   user_id integer NOT NULL,

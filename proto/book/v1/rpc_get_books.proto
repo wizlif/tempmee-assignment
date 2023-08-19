@@ -1,0 +1,17 @@
+syntax = "proto3";
+package book.v1;
+
+import "book/v1/book.proto";
+
+option go_package ="github.com/wizlif/tempmee_assignment/book/v1";
+
+message GetBooksRequest {
+  reserved 3;
+
+  optional int64 page = 1;
+  optional int64 limit = 2;
+}
+
+message GetBooksResponse {
+  repeated Book books =1;
+}

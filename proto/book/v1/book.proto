@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package book.v1;
+
+option go_package = "github.com/wizlif/tempmee_assignment/book/v1";
+
+message Book {
+  int32 id = 1;
+  string title = 2;
+  string author = 3;
+  double price = 4;
+  int32 page_count = 5;
+}

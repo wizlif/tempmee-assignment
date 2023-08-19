@@ -14,10 +14,10 @@ INSERT INTO books (title,author,price,page_count) VALUES (?, ?, ?, ?) RETURNING 
 `
 
 type CreateBookParams struct {
-	Title     string `json:"title"`
-	Author    string `json:"author"`
-	Price     int64  `json:"price"`
-	PageCount int64  `json:"page_count"`
+	Title     string  `json:"title"`
+	Author    string  `json:"author"`
+	Price     float64 `json:"price"`
+	PageCount int64   `json:"page_count"`
 }
 
 func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (int64, error) {

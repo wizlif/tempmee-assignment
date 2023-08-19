@@ -13,7 +13,7 @@ type Book struct {
 	ID        int64        `json:"id"`
 	Title     string       `json:"title"`
 	Author    string       `json:"author"`
-	Price     int64        `json:"price"`
+	Price     float64      `json:"price"`
 	PageCount int64        `json:"page_count"`
 	CreatedAt time.Time    `json:"created_at"`
 	UpdatedAt sql.NullTime `json:"updated_at"`
