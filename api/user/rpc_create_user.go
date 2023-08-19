@@ -8,23 +8,21 @@ import (
 	"github.com/wizlif/tempmee_assignment/util"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"github.com/bufbuild/protovalidate-go"
 )
 
 func (server *UserServer) CreateUser(ctx context.Context, req *upb.CreateUserRequest) (*upb.CreateUserResponse, error) {
-	v, err := protovalidate.New()
-	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to initialize validator")
+	if err := util.ValidateRequest(req); err != nil {
+		return nil, err
 	}
 
-	if err = v.Validate(req); err != nil {
-		return nil, util.InvalidArgumentError("validation failed", util.ValidationErrorToFieldViolation(err))
+	hashedPassword, err := util.HashPassword(req.GetPassword())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to create account")
 	}
 
 	_, err = server.db.CreateUser(ctx, db.CreateUserParams{
-		Email:    req.Email,
-		Password: req.Password,
+		Email:    req.GetEmail(),
+		Password: hashedPassword,
 	})
 
 	if err != nil {

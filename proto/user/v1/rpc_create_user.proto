@@ -8,13 +8,30 @@ import "user/v1/user.proto";
 option go_package = "github.com/wizlif/tempmee_assignment/user/v1";
 
 message CreateUserRequest {
-  string username = 1;
-  string full_name = 2;
   string email = 3  [
     (buf.validate.field).string.email = true,
     (buf.validate.field).required = true
     ];
-  string password = 4;
+  string password = 4 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.min_len = 6,
+    (buf.validate.field).cel= {
+      id: "create_user_request.password",
+      expression: "!this.matches('[a-z]') ? 'At least one lowercase letter required': ''"
+    },
+    (buf.validate.field).cel= {
+      id: "create_user_request.password",
+      expression: "!this.matches('[A-Z]') ? 'At least one uppercase letter required': ''"
+    },
+    (buf.validate.field).cel= {
+      id: "create_user_request.password",
+      expression: "!this.matches('[0-9]') ? 'At least one number required': ''"
+    },
+    (buf.validate.field).cel= {
+      id: "create_user_request.password",
+      expression: "!this.matches('[#$@!&*%]') ? 'At least one special character required': ''"
+    }
+    ];
 }
 
 message CreateUserResponse {
