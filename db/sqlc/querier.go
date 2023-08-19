@@ -12,8 +12,12 @@ type Querier interface {
 	CreateBook(ctx context.Context, arg CreateBookParams) (int64, error)
 	CreateOrder(ctx context.Context, arg CreateOrderParams) (int64, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (int64, error)
+	GetBookById(ctx context.Context, id int64) (Book, error)
+	GetOrderById(ctx context.Context, id int64) (VOrder, error)
+	GetUserByEmail(ctx context.Context, email string) (User, error)
 	ListBooks(ctx context.Context, arg ListBooksParams) ([]Book, error)
 	ListOrders(ctx context.Context, arg ListOrdersParams) ([]Order, error)
+	ListUserOrders(ctx context.Context, arg ListUserOrdersParams) ([]VOrder, error)
 	UpdateOrderStatus(ctx context.Context, arg UpdateOrderStatusParams) error
 }
 

@@ -18,7 +18,7 @@ CREATE TABLE books (
 
 CREATE TABLE orders (
   id INTEGER PRIMARY KEY,
-  price integer NOT NULL,
+  price REAL NOT NULL,
   book_id integer NOT NULL,
   user_id integer NOT NULL,
   status varchar NOT NULL DEFAULT 'PENDING',

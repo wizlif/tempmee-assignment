@@ -10,14 +10,15 @@ import (
 )
 
 const createOrder = `-- name: CreateOrder :one
-INSERT INTO orders (price,book_id,user_id,status) VALUES (?, ?, ?, ?) RETURNING id
+INSERT INTO orders (price,book_id,user_id,total,status) VALUES (?, ?, ?, ?, ?) RETURNING id
 `
 
 type CreateOrderParams struct {
-	Price  int64  `json:"price"`
-	BookID int64  `json:"book_id"`
-	UserID int64  `json:"user_id"`
-	Status string `json:"status"`
+	Price  float64 `json:"price"`
+	BookID int64   `json:"book_id"`
+	UserID int64   `json:"user_id"`
+	Total  int64   `json:"total"`
+	Status string  `json:"status"`
 }
 
 func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) (int64, error) {
@@ -25,6 +26,7 @@ func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) (int64
 		arg.Price,
 		arg.BookID,
 		arg.UserID,
+		arg.Total,
 		arg.Status,
 	)
 	var id int64
@@ -32,8 +34,27 @@ func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) (int64
 	return id, err
 }
 
+const getOrderById = `-- name: GetOrderById :one
+SELECT id, price, total, status, title, email, created_at FROM v_orders WHERE id = ?
+`
+
+func (q *Queries) GetOrderById(ctx context.Context, id int64) (VOrder, error) {
+	row := q.db.QueryRowContext(ctx, getOrderById, id)
+	var i VOrder
+	err := row.Scan(
+		&i.ID,
+		&i.Price,
+		&i.Total,
+		&i.Status,
+		&i.Title,
+		&i.Email,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const listOrders = `-- name: ListOrders :many
-SELECT id, price, book_id, user_id, status, created_at, updated_at FROM orders ORDER BY id LIMIT ? OFFSET ?
+SELECT id, price, book_id, user_id, status, created_at, updated_at, total FROM orders ORDER BY id LIMIT ? OFFSET ?
 `
 
 type ListOrdersParams struct {
@@ -58,6 +79,48 @@ func (q *Queries) ListOrders(ctx context.Context, arg ListOrdersParams) ([]Order
 			&i.Status,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.Total,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listUserOrders = `-- name: ListUserOrders :many
+SELECT id, price, total, status, title, email, created_at FROM v_orders WHERE email = ? ORDER BY id LIMIT ? OFFSET ?
+`
+
+type ListUserOrdersParams struct {
+	Email  string `json:"email"`
+	Limit  int64  `json:"limit"`
+	Offset int64  `json:"offset"`
+}
+
+func (q *Queries) ListUserOrders(ctx context.Context, arg ListUserOrdersParams) ([]VOrder, error) {
+	rows, err := q.db.QueryContext(ctx, listUserOrders, arg.Email, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []VOrder{}
+	for rows.Next() {
+		var i VOrder
+		if err := rows.Scan(
+			&i.ID,
+			&i.Price,
+			&i.Total,
+			&i.Status,
+			&i.Title,
+			&i.Email,
+			&i.CreatedAt,
 		); err != nil {
 			return nil, err
 		}

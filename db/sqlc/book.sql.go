@@ -32,6 +32,25 @@ func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (int64, 
 	return id, err
 }
 
+const getBookById = `-- name: GetBookById :one
+SELECT id, title, author, price, page_count, created_at, updated_at FROM books WHERE id = ?
+`
+
+func (q *Queries) GetBookById(ctx context.Context, id int64) (Book, error) {
+	row := q.db.QueryRowContext(ctx, getBookById, id)
+	var i Book
+	err := row.Scan(
+		&i.ID,
+		&i.Title,
+		&i.Author,
+		&i.Price,
+		&i.PageCount,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const listBooks = `-- name: ListBooks :many
 SELECT id, title, author, price, page_count, created_at, updated_at FROM books ORDER BY id LIMIT ? OFFSET ?
 `

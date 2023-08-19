@@ -3,3 +3,6 @@ INSERT INTO books (title,author,price,page_count) VALUES (?, ?, ?, ?) RETURNING 
 
 -- name: ListBooks :many
 SELECT * FROM books ORDER BY id LIMIT ? OFFSET ?;
+
+-- name: GetBookById :one
+SELECT * FROM books WHERE id = ?;
