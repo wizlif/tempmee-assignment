@@ -57,8 +57,34 @@ We use the [REST Client](https://marketplace.visualstudio.com/items?itemName=hum
 
 1. Clone the repository
 2. Run `make server` to start the server or with docker use `make prod`
+3. View the API docs and test it at [http://localhost:8555/swagger/index.html](http://localhost:8555/swagger/index.html)
+4. Alternatively open the [requests.http](./requests.http) in VSCode with the  [VSCode REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension enabled and siimply test the end-points.
 
-For more information, refer to the Makefile.
+![Preview](./doc/sample.gif "a preview")
+
+> For more information, refer to the Makefile.
+
+
+## Folder Structure
+
+```bash
+src
+├── api # gRPC-Gateway API implementations
+├── db # Contains all database migrations, mocks and query files
+├── doc # Contains swagger documentation & database dbml docs
+├── pb # Contains all generated proto stubs
+├── proto # Contains proto definitions and their buf configurations
+├── tools # Contains go module inclusions that are not directly accessed e.g statik
+├── util # contains helper methods for configuration etc
+├── app.env # .env for general API configuration
+├── buf.gen.yaml # buf plugin configurations
+├── buf.work.yaml # buf directory and version configurations
+├── dev.db # SQLite database with dummy data
+├── main.go # app central execution point
+├── Makefile # helper commands
+├── sqlc.yaml # sqlc database manager configurations
+└── requests.http # test http requests
+```
 
 # Further Reading
 
