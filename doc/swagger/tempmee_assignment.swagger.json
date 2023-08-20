@@ -334,18 +334,8 @@
     "v1User": {
       "type": "object",
       "properties": {
-        "username": {
-          "type": "string"
-        },
-        "fullName": {
-          "type": "string"
-        },
         "email": {
           "type": "string"
-        },
-        "passwordChangedAt": {
-          "type": "string",
-          "format": "date-time"
         },
         "createdAt": {
           "type": "string",

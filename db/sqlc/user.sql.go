@@ -10,7 +10,7 @@ import (
 )
 
 const createUser = `-- name: CreateUser :one
-INSERT INTO users (email,password) VALUES (?, ?) RETURNING id
+INSERT INTO users (email,password) VALUES (?, ?) RETURNING id, email, password, created_at, updated_at
 `
 
 type CreateUserParams struct {
@@ -18,11 +18,17 @@ type CreateUserParams struct {
 	Password string `json:"password"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int64, error) {
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, createUser, arg.Email, arg.Password)
-	var id int64
-	err := row.Scan(&id)
-	return id, err
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.Password,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one

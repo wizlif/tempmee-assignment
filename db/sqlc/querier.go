@@ -11,7 +11,7 @@ import (
 type Querier interface {
 	CreateBook(ctx context.Context, arg CreateBookParams) (int64, error)
 	CreateOrder(ctx context.Context, arg CreateOrderParams) (int64, error)
-	CreateUser(ctx context.Context, arg CreateUserParams) (int64, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	GetBookById(ctx context.Context, id int64) (Book, error)
 	GetOrderById(ctx context.Context, id int64) (VOrder, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
