@@ -11,6 +11,8 @@ require (
 	github.com/rakyll/statik v0.1.7
 	github.com/rs/zerolog v1.30.0
 	github.com/spf13/viper v1.16.0
+	github.com/stretchr/testify v1.8.4
+	go.uber.org/mock v0.2.0
 	golang.org/x/crypto v0.11.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20230815205213-6bfd019c3878
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230815205213-6bfd019c3878
@@ -20,6 +22,8 @@ require (
 
 require (
 	github.com/antlr/antlr4/runtime/Go/antlr/v4 v4.0.0-20230512164433-5d1fd1a340c9 // indirect
+	github.com/axw/gocov v1.1.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/cel-go v0.17.1 // indirect
@@ -33,6 +37,7 @@ require (
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect
