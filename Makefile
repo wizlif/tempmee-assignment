@@ -11,7 +11,7 @@ DOC_DIR   := doc
 DB_URL=sqlite://dev.db
 
 proto: ## Build proto files
-	rm -f pb/*.go
+	rm -rf pb/*
 	rm -f doc/swagger/*.swagger.json
 	buf lint
 	buf generate
