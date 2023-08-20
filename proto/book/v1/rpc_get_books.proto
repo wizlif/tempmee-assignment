@@ -3,7 +3,7 @@ package book.v1;
 
 import "book/v1/book.proto";
 
-option go_package ="github.com/wizlif/tempmee_assignment/book/v1";
+option go_package = "github.com/wizlif/tempmee_assignment/book/v1";
 
 message GetBooksRequest {
   reserved 3;
@@ -13,5 +13,5 @@ message GetBooksRequest {
 }
 
 message GetBooksResponse {
-  repeated Book books =1;
+  repeated Book books = 1;
 }

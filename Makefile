@@ -14,6 +14,7 @@ proto: ## Build proto files
 	rm -rf pb/*
 	rm -f doc/swagger/*.swagger.json
 	buf lint
+	buf format -w
 	buf generate
 	statik -src=$(DOC_DIR)/swagger -dest=./doc
 
@@ -51,6 +52,8 @@ test_coverage: ## Run test with gocov coverage
 create_migration: ## Create database migration e.g make create_migration name=initial_schema
 	migrate create -ext sql -dir db/migration -seq $(name)
 
+prod: ## Run project with docker compose
+	docker compose --env-file app.env up -d
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
