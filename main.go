@@ -16,8 +16,6 @@ import (
 
 	"database/sql"
 
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/sqlite"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/mattn/go-sqlite3"
 	_ "github.com/wizlif/tempmee_assignment/doc/statik"
@@ -42,34 +40,11 @@ func main() {
 		log.Fatal().Err(err).Msg("cannot connect to db")
 	}
 
-	runDBMigration(conn, config.DBName)
+	util.RunDBMigration(conn, config.DBName, "file://db/migration")
 
 	store := db.NewStore(conn)
 
 	runGatewayServer(config, store)
-}
-
-func runDBMigration(conn *sql.DB, dbSource string) {
-	driver, err := sqlite.WithInstance(conn, &sqlite.Config{})
-	if err != nil {
-		panic(err)
-	}
-
-	migration, err := migrate.NewWithDatabaseInstance(
-		"file://db/migration",
-		dbSource,
-		driver,
-	)
-
-	if err != nil {
-		log.Fatal().Err(err).Msg("cannot create new migrate instance")
-	}
-
-	if err = migration.Up(); err != nil && err != migrate.ErrNoChange {
-		log.Fatal().Err(err).Msg("failed to run migrate up")
-	}
-
-	log.Info().Msg("db migrated successfully")
 }
 
 func runGatewayServer(config util.Config, store db.Store) {
